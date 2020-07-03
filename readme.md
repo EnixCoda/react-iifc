@@ -2,27 +2,26 @@
 
 Use scoped hooks in react components.
 
-I'm always too busy to extract part of one component's state and render result into another component. The IIFC pattern save me a lot of time on that and makes state closer to where they are used.
+While components grow as app becomes more complicated, I'm always too busy to extract part of one component's state and render logic into another component. The IIFC pattern saves me a lot of time and makes state closer to where they are used. This is also especially useful when you want to use hooks in class components.
 
-This is also especially useful when you want to use hooks in class components.
-
-## Examples
-
-### Usage in class components
-
+## Example
 ```jsx
 class TheClassComponentFromLastCentryYoullNeverBeWillingToRefactorMuchButInWhichYouWantToUseHooks extends React.Component {
+  state = { text: 'Hello' }
+
   render() {
     return (
       <div>
         <IIFC>
           {() => {
-            const [count, add] = useCounter();
-            // calling `add` inscreases count by 1
-            // Everything from this class component is still available
+            const [count, add] = useCounter(); // calling `add` inscreases count by 1
+            // When count increases, the class component will not rerender unnecessarily
+            // as state is within the scope of IIFC
+
             return (
               <button onClick={() => add()}>
                 {count} - {this.state.text}
+                {/* Everything from this class component (e.g. state) is available within IIFC */}
               </button>
             );
           }}
@@ -33,62 +32,8 @@ class TheClassComponentFromLastCentryYoullNeverBeWillingToRefactorMuchButInWhich
 }
 ```
 
-### Making hooks scoped
-
-`App` renders 2 counter buttons
-
-```jsx
-function App() {
-  const [appState] = useState("good");
-  const [count1, add1] = useCounter();
-  const [count2, add2] = useCounter();
-  // Have to name them differently to prevent collision :(
-  return (
-    <div>
-      <button onClick={() => add1()}>
-        {count1} - {appState}
-      </button>
-      <button onClick={() => add2()}>
-        {count2} - {appState}
-      </button>
-    </div>
-  );
-}
-```
-
-After refactoring with IIFC.
-
-```jsx
-function App() {
-  const [appState] = useState("great");
-  return (
-    <div>
-      <IIFC>
-        {() => {
-          const [count, add] = useCounter();
-          // If you extract this button as component, you'll need to pass `appState` as a prop. But IIFC makes it available here naturally.
-          return (
-            <button onClick={() => add()}>
-              {count} - {appState}
-            </button>
-          );
-        }}
-      </IIFC>
-      <IIFC>
-        {() => {
-          const [count, add] = useCounter();
-          // No name collision :)
-          return (
-            <button onClick={() => add()}>
-              {count} - {appState}
-            </button>
-          );
-        }}
-      </IIFC>
-    </div>
-  );
-}
-```
+## Playground
+[Codesandbox](https://codesandbox.io/s/react-iifc-demo-krcod)
 
 ## Install
 
