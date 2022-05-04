@@ -1,5 +1,2 @@
-import * as React from "react";
-
-export function IIFC({ children }: { children(): React.ReactNode }) {
-  return <>{children()}</>;
-}
+export { IIFC } from "./IIFC";
+export { asIIFC } from "./decorator";
