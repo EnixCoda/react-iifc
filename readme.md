@@ -1,31 +1,64 @@
 # React IIFC
 
-Use scoped hooks in react components.
+IIFC = Instantly Invoked Function Component. What IIFC is to component is like what IIFE to functions.
 
-While components grow as app becomes more complicated, I'm always too busy to extract part of one component's state and render logic into another component. The IIFC pattern saves me a lot of time and makes state closer to where they are used. This is also especially useful when you want to use hooks in class components.
+IIFC is the easiest way to use hooks in react class components.
+
+We might be too busy to refactor & extract part of one component's state and render logic into another component. This IIFC pattern saves me a lot of time and makes state closer to where they are used.
 
 ## Example
+
+### Decorator
+
+This way is recommended if you just want to use hooks in class components.
+
 ```jsx
-class TheClassComponentFromLastCentryYoullNeverBeWillingToRefactorMuchButInWhichYouWantToUseHooks extends React.Component {
-  state = { text: 'Hello' }
+import { asIIFC } from "react-iifc";
+
+class AClassComponentWhichIsTooRiskyToRefactor extends React.Component {
+  state = { text: "I Want Hooks!" };
+
+  // This decorator is all you need for using hooks in the render method!
+  @asIIFC
+  render() {
+    const [count, add] = useCounter();
+    return (
+      <button onClick={add}>
+        {this.state.text} - {count}
+      </button>
+    );
+  }
+}
+```
+
+### IIFC Wrapper
+
+This also enables hooks in class components. Meanwhile, it can be useful for creating scoped states.
+
+```jsx
+import { asIIFC } from "react-iifc";
+
+class AnotherClassComponentWhichIsTooRiskyToRefactor extends React.Component {
+  state = { text: "I Want Hooks, too!" };
 
   render() {
     return (
       <div>
         <IIFC>
           {() => {
-            const [count, add] = useCounter(); // calling `add` inscreases count by 1
-            // When count increases, the class component will not rerender unnecessarily
-            // as state is within the scope of IIFC
-
+            // Here is a standalone scope created by IIFC, look how close
+            // the declaration and usage of `count` and `add` are!
+            const [count, add] = useCounter();
             return (
               <button onClick={() => add()}>
-                {count} - {this.state.text}
-                {/* Everything from this class component (e.g. state) is available within IIFC */}
+                {this.state.text} - {count}
               </button>
-            );
-          }}
+            )
+          }
         </IIFC>
+        <div>
+          {/* Other rendering logics */}
+        </div>
       </div>
     );
   }
@@ -33,6 +66,7 @@ class TheClassComponentFromLastCentryYoullNeverBeWillingToRefactorMuchButInWhich
 ```
 
 ## Playground
+
 [Codesandbox](https://codesandbox.io/s/react-iifc-demo-krcod)
 
 ## Install
@@ -45,10 +79,5 @@ $ yarn add react-iifc
 
 ## More
 
-> Q: The source code is too simple. Is this a joke?
->
-> A: No. :|
-
-> Q: What does IIFC mean?
->
-> A: IIFC = Instantly Invoked Function Component. What IIFC is to component is like what IIFE to functions.
+- Q: The source code is too simple. Is this a joke?
+- A: No.
