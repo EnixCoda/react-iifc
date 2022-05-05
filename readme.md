@@ -13,13 +13,14 @@ We might be too busy to refactor & extract part of one component's state and ren
 This way is recommended if you just want to use hooks in class components.
 
 ```jsx
-import { asIIFC } from "react-iifc";
+import { hooks } from "react-iifc";
 
+// @hooks // The `hooks` decorator can be placed either on the whole class or on the `render` method
 class AClassComponentWhichIsTooRiskyToRefactor extends React.Component {
   state = { text: "I Want Hooks!" };
 
+  @hooks
   // This decorator is all you need for using hooks in the render method!
-  @asIIFC
   render() {
     const [count, add] = useCounter();
     return (
@@ -36,7 +37,7 @@ class AClassComponentWhichIsTooRiskyToRefactor extends React.Component {
 This also enables hooks in class components. Meanwhile, it can be useful for creating scoped states.
 
 ```jsx
-import { asIIFC } from "react-iifc";
+import { IIFC } from "react-iifc";
 
 class AnotherClassComponentWhichIsTooRiskyToRefactor extends React.Component {
   state = { text: "I Want Hooks, too!" };
