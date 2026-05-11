@@ -7,6 +7,10 @@
   ],
   "author": "EnixCoda <enixcoda@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EnixCoda/react-iifc.git"
+  },
   "scripts": {
     "build": "tsc"
   },
