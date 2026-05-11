@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IIFC } from "./IIFC";
+import { IIFC } from "./IIFC.js";
 
 function renderMethodDecorator<T extends React.Component, Key extends keyof T>(
   target: T,

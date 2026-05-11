@@ -1,2 +1,2 @@
-export { hooks } from "./decorator";
-export { IIFC } from "./IIFC";
+export { hooks } from "./decorator.js";
+export { IIFC } from "./IIFC.js";
